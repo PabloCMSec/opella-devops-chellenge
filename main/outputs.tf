@@ -12,21 +12,18 @@ output "rsg_location" {
   description = "Location of the resource group"
 }
 output "vnet_name" {
-  value       = module.vnet.name
+  value       = module.vnet.vnet_name
   description = "Name of the VNet"
 }
 output "vnet_id" {
   value       = module.vnet.vnet_id
   description = "ID of the VNet"
 }
-output "vnet_location" {
-  value       = module.vnet.location
-  description = "Location of the VNet"
-}
 output "vnet_address_space" {
-  value       = module.vnet.address_space
+  value       = module.vnet.vnet_address_space
   description = "Address space of the VNet"
 }
+
 output "public_subnet_ids" {
   value       = module.vnet.public_subnet_ids
   description = "Public subnet IDs"

@@ -18,3 +18,14 @@ module "rsg" {
   environment = local.environment
   tags        = var.tags
 }
+
+module "storage" {
+  source              = "../modules/sta"
+  name                = "${local.environment}storage"
+  location            = var.location
+  resource_group_name = module.rsg.name
+  account_tier        = "Standard"
+  account_replication_type = "LRS"
+  environment         = local.environment
+  tags                = var.tags
+}
