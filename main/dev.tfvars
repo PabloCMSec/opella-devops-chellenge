@@ -30,10 +30,10 @@ private_subnets = {
         direction                  = "Inbound"
         access                     = "Allow"
         protocol                   = "Tcp"
-        source_port_range          = "10.0.1.0/24"
+        source_port_range          = "*"
         destination_port_range     = "3000"
         source_address_prefix      = "*"
-        destination_address_prefix = "*"
+        destination_address_prefix = "10.0.1.0/24"
       }
     }
   },
@@ -45,10 +45,10 @@ private_subnets = {
         direction                  = "Inbound"
         access                     = "Allow"
         protocol                   = "Tcp"
-        source_port_range          = "10.0.2.0/24"
+        source_port_range          = "*"
         destination_port_range     = "5432"
         source_address_prefix      = "*"
-        destination_address_prefix = "*"
+        destination_address_prefix = "10.0.2.0/24"
       }
     }
   }

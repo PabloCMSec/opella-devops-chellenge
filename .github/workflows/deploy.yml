@@ -1,0 +1,52 @@
+name: Terraform Deploy
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: "Terraform Plan"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: main
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.6
+
+      - name: Set environment-specific variables
+        id: env
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "TFVARS=prod.tfvars" >> $GITHUB_OUTPUT
+            echo "BACKEND=prod.backend.tfvars" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref_name }}" == "dev" ]]; then
+            echo "TFVARS=dev.tfvars" >> $GITHUB_OUTPUT
+            echo "BACKEND=dev.backend.tfvars" >> $GITHUB_OUTPUT
+          else
+            echo "Rama no reconocida"
+            exit 1
+          fi
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init
+        run: terraform init -backend-config="../env/${{ steps.env.outputs.BACKEND }}"
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -var-file="${{ steps.env.outputs.TFVARS }}"
