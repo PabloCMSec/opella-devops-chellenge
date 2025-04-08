@@ -19,9 +19,8 @@ variable "address_space" {
 }
 
 variable "public_subnets" {
-  description = "Public subnets with optional security rules"
-  type = list(object({
-    name           = string
+  description = "Public subnets with optional security rules, keyed by subnet name"
+  type = map(object({
     address_prefix = string
     security_rules = optional(map(object({
       priority                   = number
@@ -34,13 +33,12 @@ variable "public_subnets" {
       destination_address_prefix = string
     })))
   }))
-  default = []
+  default = {}
 }
 
 variable "private_subnets" {
-  description = "Private subnets with optional security rules"
-  type = list(object({
-    name           = string
+  description = "Private subnets with optional security rules, keyed by subnet name"
+  type = map(object({
     address_prefix = string
     security_rules = optional(map(object({
       priority                   = number
@@ -53,7 +51,27 @@ variable "private_subnets" {
       destination_address_prefix = string
     })))
   }))
-  default = []
+  default = {}
+}
+
+variable "vm_size" {
+  description = "Size of the VM"
+  type        = string
+  default     = "Standard_DS1_v2"
+}
+variable "vm_admin_username" {
+  description = "Admin username for the VM"
+  type        = string
+}
+variable "vm_admin_password" {
+  description = "Admin password for the VM"
+  type        = string
+  sensitive   = true
+}
+
+variable "vm_subnet_key" {
+  description = "Key for the VM subnet"
+  type        = string
 }
 
 variable "tags" {

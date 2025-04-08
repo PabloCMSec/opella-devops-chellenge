@@ -13,18 +13,18 @@ resource "azurerm_virtual_network" "this" {
 }
 
 resource "azurerm_subnet" "public" {
-  for_each = { for subnet in var.public_subnets : subnet.name => subnet }
+  for_each = var.public_subnets
 
-  name                 = each.value.name
+  name                 = each.key
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = [each.value.address_prefix]
 }
 
 resource "azurerm_subnet" "private" {
-  for_each = { for subnet in var.private_subnets : subnet.name => subnet }
+  for_each = var.private_subnets
 
-  name                 = each.value.name
+  name                 = each.key
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = [each.value.address_prefix]
@@ -32,9 +32,8 @@ resource "azurerm_subnet" "private" {
 
 resource "azurerm_network_security_group" "public_nsg" {
   for_each = {
-    for subnet in var.public_subnets :
-    subnet.name => subnet
-    if length(try(subnet.security_rules, {})) > 0
+    for key, subnet in var.public_subnets :
+    key => subnet if length(try(subnet.security_rules, {})) > 0
   }
 
   name                = "${each.key}-nsg"
@@ -51,9 +50,8 @@ resource "azurerm_network_security_group" "public_nsg" {
 
 resource "azurerm_network_security_group" "private_nsg" {
   for_each = {
-    for subnet in var.private_subnets :
-    subnet.name => subnet
-    if length(try(subnet.security_rules, {})) > 0
+    for key, subnet in var.private_subnets :
+    key => subnet if length(try(subnet.security_rules, {})) > 0
   }
 
   name                = "${each.key}-nsg"
@@ -71,12 +69,12 @@ resource "azurerm_network_security_group" "private_nsg" {
 resource "azurerm_network_security_rule" "public_rules" {
   for_each = {
     for rule in flatten([
-      for subnet in var.public_subnets : [
+      for key, subnet in var.public_subnets : [
         for rule_name, rule in try(subnet.security_rules, {}) : {
-          id          = "${subnet.name}-${rule_name}"
-          subnet_name = subnet.name
-          rule_name   = rule_name
-          rule        = rule
+          id         = "${key}-${rule_name}"
+          subnet_key = key
+          rule_name  = rule_name
+          rule       = rule
         }
       ]
     ]) : rule.id => rule
@@ -92,18 +90,18 @@ resource "azurerm_network_security_rule" "public_rules" {
   source_address_prefix       = each.value.rule.source_address_prefix
   destination_address_prefix  = each.value.rule.destination_address_prefix
   resource_group_name         = var.resource_group_name
-  network_security_group_name = azurerm_network_security_group.public_nsg[each.value.subnet_name].name
+  network_security_group_name = azurerm_network_security_group.public_nsg[each.value.subnet_key].name
 }
 
 resource "azurerm_network_security_rule" "private_rules" {
   for_each = {
     for rule in flatten([
-      for subnet in var.private_subnets : [
+      for key, subnet in var.private_subnets : [
         for rule_name, rule in try(subnet.security_rules, {}) : {
-          id          = "${subnet.name}-${rule_name}"
-          subnet_name = subnet.name
-          rule_name   = rule_name
-          rule        = rule
+          id         = "${key}-${rule_name}"
+          subnet_key = key
+          rule_name  = rule_name
+          rule       = rule
         }
       ]
     ]) : rule.id => rule
@@ -119,7 +117,7 @@ resource "azurerm_network_security_rule" "private_rules" {
   source_address_prefix       = each.value.rule.source_address_prefix
   destination_address_prefix  = each.value.rule.destination_address_prefix
   resource_group_name         = var.resource_group_name
-  network_security_group_name = azurerm_network_security_group.private_nsg[each.value.subnet_name].name
+  network_security_group_name = azurerm_network_security_group.private_nsg[each.value.subnet_key].name
 }
 
 resource "azurerm_subnet_network_security_group_association" "public" {

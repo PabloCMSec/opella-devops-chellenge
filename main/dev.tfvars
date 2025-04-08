@@ -3,9 +3,8 @@ resource_group_name = "opella-rg"
 location            = "westeurope"
 address_space       = ["10.0.0.0/16"]
 
-public_subnets = [
-  {
-    name           = "web"
+public_subnets = {
+  web = {
     address_prefix = "10.0.1.0/24"
     security_rules = {
       AllowHTTP = {
@@ -20,11 +19,10 @@ public_subnets = [
       }
     }
   }
-]
+}
 
-private_subnets = [
-  {
-    name           = "app"
+private_subnets = {
+  app = {
     address_prefix = "10.0.2.0/24"
     security_rules = {
       AllowHTTP = {
@@ -39,8 +37,7 @@ private_subnets = [
       }
     }
   },
-  {
-    name           = "db"
+  db = {
     address_prefix = "10.0.3.0/24"
     security_rules = {
       AllowHTTP = {
@@ -55,7 +52,13 @@ private_subnets = [
       }
     }
   }
-]
+}
+
+vm_size           = "Standard_DS1_v2"
+vm_admin_username = "adminuser"
+vm_admin_password = "P@ssw0rd1234!"
+vm_subnet_key     = "app"
+
 
 tags = {
   owner   = "pablo"

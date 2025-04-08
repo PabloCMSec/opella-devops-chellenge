@@ -20,12 +20,26 @@ module "rsg" {
 }
 
 module "storage" {
-  source              = "../modules/sta"
-  name                = "${local.environment}storage"
+  source                   = "../modules/sta"
+  name                     = "${local.environment}storage"
+  location                 = var.location
+  resource_group_name      = module.rsg.name
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  environment              = local.environment
+  tags                     = var.tags
+}
+
+module "ubuntu-vm" {
+  source              = "../modules/ubuntu-vm"
+  name                = "${local.environment}-vm"
   location            = var.location
   resource_group_name = module.rsg.name
-  account_tier        = "Standard"
-  account_replication_type = "LRS"
+  size                = var.vm_size
+  admin_username      = var.vm_admin_username
+  admin_password      = var.vm_admin_password
+  subnet_id           = module.vnet.private_subnet_ids[var.vm_subnet_key]
   environment         = local.environment
   tags                = var.tags
 }
+

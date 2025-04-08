@@ -24,9 +24,8 @@ variable "address_space" {
 }
 
 variable "public_subnets" {
-  description = "Public subnets with optional security rules"
-  type = list(object({
-    name           = string
+  description = "Public subnets with optional security rules, keyed by subnet name"
+  type = map(object({
     address_prefix = string
     security_rules = optional(map(object({
       priority                   = number
@@ -39,13 +38,12 @@ variable "public_subnets" {
       destination_address_prefix = string
     })))
   }))
-  default = []
+  default = {}
 }
 
 variable "private_subnets" {
-  description = "Private subnets with optional security rules"
-  type = list(object({
-    name           = string
+  description = "Private subnets with optional security rules, keyed by subnet name"
+  type = map(object({
     address_prefix = string
     security_rules = optional(map(object({
       priority                   = number
@@ -58,8 +56,9 @@ variable "private_subnets" {
       destination_address_prefix = string
     })))
   }))
-  default = []
+  default = {}
 }
+
 
 variable "tags" {
   description = "Common tags"
