@@ -1,4 +1,4 @@
-output  "id" {
+output "id" {
   description = "The ID of the VM"
   value       = azurerm_linux_virtual_machine.this.id
 }

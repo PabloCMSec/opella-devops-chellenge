@@ -6,7 +6,7 @@ resource "azurerm_storage_account" "this" {
   account_replication_type = var.account_replication_type
   min_tls_version          = "TLS1_2"
 
-    tags = merge(
+  tags = merge(
     {
       "Name"        = var.name
       "Environment" = var.environment
