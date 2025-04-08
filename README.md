@@ -1,71 +1,110 @@
-# opella-devops-chellenge
+# 🚀 Opella DevOps Technical Challenge: Azure Infrastructure with Terraform
+
 ## ☁️ Terraform Project: Azure Infrastructure Foundation
 
-This Terraform project sets up a basic but scalable infrastructure in **Microsoft Azure**, suitable for multiple environments (`dev`, `prod`). It includes:
+This project showcases Infrastructure as Code (IaC) best practices using Terraform on Microsoft Azure. It is designed to deploy multiple environments (`dev`, `prod`) and can easily scale to additional regions or resources.
 
-- A **Resource Group**.
-- A **Virtual Network** with public and private subnets.
-- A **Storage Account**.
-- Environment isolation using `terraform.workspace`.
+Included:
+
+- Reusable **VNET module** with public and private subnets.
+- **Storage Account** for blob storage and remote state backend.
+- **Ubuntu Virtual Machine** with password-based authentication.
+- Environment separation using branches and `.tfvars` files.
+- Automated deployment via **GitHub Actions**.
 
 ---
 
-### 📁 Project Structure
+## 📁 Project Structure
 
 ```bash
 .
-├── arch.tf             # Main architecture composition (modules)
-├── locals.tf           # Environment settings
-├── outputs.tf          # Exported values
-├── variables.tf        # Input variables
-├── dev.tfvars          # Dev environment variables
-├── prod.tfvars         # Prod environment variables
-├── versions.tf         # Providers and Terraform version
+├── main/
+│   ├── arch.tf             # Architecture composition
+│   ├── dev.tfvars          # Dev environment variables
+│   ├── prod.tfvars         # Prod environment variables
+│   ├── locals.tf           # Environment-local settings
+│   ├── outputs.tf          # Module outputs
+│   ├── variables.tf        # Global input variables
+│   ├── versions.tf         # Backend, provider and version requirements
+├── modules/
+│   ├── rsg/                # Resource Group module
+│   ├── vnet/               # Virtual Network module
+│   ├── sta/                # Storage Account module
+│   └── ubuntu-vm/          # Ubuntu VM module
+├── env/
+│   ├── dev.backend.tfvars  # Remote backend config for dev
+│   └── prod.backend.tfvars # Remote backend config for prod
+└── .github/
+    └── workflows/
+        └── deploy.yml      # CI/CD pipeline
 ```
 
 ---
 
-### 📦 Modules Used
+## ⚙️ CI/CD Automation
 
-- `../modules/rsg` → Azure Resource Group
-- `../modules/vnet` → Virtual Network with public/private subnets
-- `../modules/sta` → Storage Account
+This project uses **GitHub Actions** to run Terraform plans automatically:
 
-Each module accepts common tags and is dynamically named using the workspace (e.g., `dev-rg`, `prod-vnet`, etc.).
+- On **`dev`** branch → uses `dev.tfvars`
+- On **`main`** branch → uses `prod.tfvars`
+- Remote backend uses `LexIA` resource group and `stalexia` storage account.
+- State files are stored in separate keys for each environment.
 
 ---
 
-### ▶️ How to Use
+## ▶️ Manual Usage
 
-Initialize and apply a specific environment:
+### Dev environment:
 
 ```bash
-terraform init
-terraform workspace new dev   # or 'prod'
-terraform apply -var-file=dev.tfvars
+terraform init -backend-config="../env/dev.backend.tfvars"
+terraform plan -var-file="dev.tfvars"
+terraform apply -var-file="dev.tfvars"
+```
+
+### Prod environment:
+
+```bash
+terraform init -backend-config="../env/prod.backend.tfvars"
+terraform plan -var-file="prod.tfvars"
+terraform apply -var-file="prod.tfvars"
 ```
 
 ---
 
-### 📤 Outputs
+## 📦 Modules Overview
 
-This project exports:
+| Module       | Description                                 |
+|--------------|---------------------------------------------|
+| `rsg`        | Resource Group with environment-based tags  |
+| `vnet`       | VNET with public/private subnets and NSGs   |
+| `sta`        | Storage Account for blobs and remote state  |
+| `ubuntu-vm`  | Ubuntu VM with password authentication       |
 
-- Resource Group name, ID, and location
-- VNet name, ID, address space
-- Subnet IDs
-- NSG IDs
-- Storage Account name, access key, blob endpoint
+All modules support tags and environment/region-specific naming.
 
 ---
 
-### 🧪 Example: dev.tfvars
+## 📤 Outputs
+
+Exported values include:
+
+- Resource Group name and ID
+- VNET name, ID, and address space
+- Subnet and NSG IDs
+- Storage Account name and access key
+- VM private IP and NIC
+
+---
+
+## 🧪 Example: `dev.tfvars`
 
 ```hcl
-vnet_name           = "opella"
-resource_group_name = "opella-rg"
-location            = "westeurope"
-address_space       = ["10.0.0.0/16"]
+environment          = "dev"
+location             = "westeurope"
+resource_group_name  = "defaultopella-rg"
+vnet_name            = "defaultopella-vnet"
+address_space        = ["10.0.0.0/16"]
 
 public_subnets = [
   {
@@ -85,8 +124,21 @@ public_subnets = [
     }
   }
 ]
+
+admin_username = "pablo"
+admin_password = "YourSecurePassword123"
 ```
 
 ---
 
-📄 **This README has been automatically generated using an AI-assisted process.**
+## 🧹 Best Practices
+
+- Clean, modular and reusable code
+- Clear separation of environments with externalized variables
+- GitHub Actions pipeline based on branches
+- Azure Storage Account used as Terraform remote backend
+- Ready for `terraform-docs`, `tflint`, `pre-commit`, `checkov`, or `terratest` integration
+
+---
+
+📄 *This README was generated and refined with the help of AI.*
