@@ -1,0 +1,51 @@
+Acquiring state lock. This may take a few moments...
+[0m[1mmodule.rsg.azurerm_resource_group.rsg: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg][0m
+[0m[1mmodule.vnet.azurerm_network_security_group.private_nsg["db"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/networkSecurityGroups/db-nsg][0m
+[0m[1mmodule.vnet.azurerm_virtual_network.this: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet][0m
+[0m[1mmodule.vnet.azurerm_network_security_group.private_nsg["app"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/networkSecurityGroups/app-nsg][0m
+[0m[1mmodule.vnet.azurerm_network_security_group.public_nsg["web"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/networkSecurityGroups/web-nsg][0m
+[0m[1mmodule.storage.azurerm_storage_account.this: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Storage/storageAccounts/devopellastorage][0m
+[0m[1mmodule.vnet.azurerm_network_security_rule.public_rules["web-AllowHTTP"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/networkSecurityGroups/web-nsg/securityRules/AllowHTTP][0m
+[0m[1mmodule.vnet.azurerm_subnet.private["app"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet/subnets/app][0m
+[0m[1mmodule.vnet.azurerm_subnet.private["db"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet/subnets/db][0m
+[0m[1mmodule.vnet.azurerm_subnet.public["web"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet/subnets/web][0m
+[0m[1mmodule.vnet.azurerm_network_security_rule.private_rules["db-AllowHTTP"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/networkSecurityGroups/db-nsg/securityRules/AllowHTTP][0m
+[0m[1mmodule.vnet.azurerm_network_security_rule.private_rules["app-AllowHTTP"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/networkSecurityGroups/app-nsg/securityRules/AllowHTTP][0m
+[0m[1mmodule.vnet.azurerm_subnet_network_security_group_association.public["web"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet/subnets/web][0m
+[0m[1mmodule.vnet.azurerm_subnet_network_security_group_association.private["app"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet/subnets/app][0m
+[0m[1mmodule.vnet.azurerm_subnet_network_security_group_association.private["db"]: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet/subnets/db][0m
+[0m[1mmodule.ubuntu-vm.azurerm_network_interface.this: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/networkInterfaces/dev-opella-vm-nic][0m
+[0m[1mmodule.ubuntu-vm.azurerm_linux_virtual_machine.this: Refreshing state... [id=/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Compute/virtualMachines/dev-opella-vm][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+Releasing state lock. This may take a few moments...
+[0m[1m[32m
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+[0m[0m[1m[32m
+Outputs:
+
+[0mprivate_nsg_ids = {
+  "app" = "/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/networkSecurityGroups/app-nsg"
+  "db" = "/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/networkSecurityGroups/db-nsg"
+}
+private_subnet_ids = {
+  "app" = "/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet/subnets/app"
+  "db" = "/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet/subnets/db"
+}
+public_nsg_ids = {
+  "web" = "/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/networkSecurityGroups/web-nsg"
+}
+public_subnet_ids = {
+  "web" = "/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet/subnets/web"
+}
+rsg_id = "/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg"
+rsg_location = "westeurope"
+rsg_name = "dev-opella-rg"
+vnet_address_space = toset([
+  "10.0.0.0/16",
+])
+vnet_id = "/subscriptions/78c227db-f22a-40db-9f71-31fdedc8f3c7/resourceGroups/dev-opella-rg/providers/Microsoft.Network/virtualNetworks/dev-opella-vnet"
+vnet_name = "dev-opella-vnet"
